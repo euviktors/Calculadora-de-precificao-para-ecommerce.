@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora de Precificação</title>
+  <style>
+    /* Estilos CSS para o formulário */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    input[type="submit"] {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    #results {
+      margin-top: 20px;
+    }
+
+    #results p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de Precificação</h1>
+
+  <form id="pricingForm">
+    <label for="productPrice">Preço do Produto:</label>
+    <input type="text" id="productPrice" placeholder="Digite o preço do produto">
+
+    <label for="sellPrice">Preço de Venda:</label>
+    <input type="text" id="sellPrice" placeholder="Digite o preço de venda">
+
+    <label for="gatewayFee">Taxa do Gateway de Pagamento:</label>
+    <input type="text" id="gatewayFee" value="4.99" placeholder="Digite a taxa do gateway">
+
+    <label for="iof">IOF:</label>
+    <input type="text" id="iof" value="0.38" placeholder="Digite o valor do IOF">
+
+    <label for="icms">ICMS:</label>
+    <input type="text" id="icms" value="17" placeholder="Digite a taxa do ICMS">
+
+    <label for="das">DAS:</label>
+    <input type="text" id="das" placeholder="Digite o valor do DAS">
+
+    <label for="checkoutFee">Taxa Checkout Transparente:</label>
+    <input type="text" id="checkoutFee" placeholder="Digite o valor da taxa">
+
+    <label for="businessTaxes">Impostos Empresariais:</label>
+    <input type="text" id="businessTaxes" placeholder="Digite o valor dos impostos">
+
+    <input type="submit" value="Calcular">
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    // Função para calcular a precificação com base nos valores inseridos no formulário
+    function calculatePricing() {
+      const productPrice = parseFloat(document.getElementById('productPrice').value) || 0;
+      const sellPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
+      const gatewayFee = parseFloat(document.getElementById('gatewayFee').value) || 0;
+      const iof = parseFloat(document.getElementById('iof').value) || 0;
+      const icms = parseFloat(document.getElementById('icms').value) || 0;
+      const das = parseFloat(document.getElementById('das').value) || 0;
+      const checkoutFee = parseFloat(document.getElementById('checkoutFee').value) || 0;
+      const businessTaxes = parseFloat(document.getElementById('businessTaxes').value) || 0;
+
+      const totalOperationalCosts = gatewayFee + iof + icms + das + checkoutFee + businessTaxes;
+      const totalProfit = sellPrice - (productPrice + totalOperationalCosts);
+      const profitMarginPercentage = (totalProfit / sellPrice) * 100;
+      const maxCPA = totalOperationalCosts / totalProfit;
+      const recommendedSellingPrice = productPrice + totalOperationalCosts;
+      const recommendedMarkup = (recommendedSellingPrice - productPrice) / productPrice * 100;
+
+      // Exibindo os resultados
+      document.getElementById('results').innerHTML = `
+        <p>Total Custo Operacional: R$${totalOperationalCosts.toFixed(2)}</p>
+        <p>Lucro Total: R$${totalProfit.toFixed(2)}</p>
+        <p>Margem de Lucro Total: ${profitMarginPercentage.toFixed(2)}%</p>
+        <p>Max. Custo Por Aquisição (CPA): R$${maxCPA.toFixed(2)}</p>
+        <p>Preço Recomendado de Venda: R$${recommendedSellingPrice.toFixed(2)}</p>
+        <p>Markup Recomendado: ${recommendedMarkup.toFixed(2)}%</p>
+      `;
+    }
+
+    // Manipulador de evento para o envio do formulário
+    document.getElementById('pricingForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      calculatePricing();
+    });
+  </script>
+</body>
+<footer style="text-align: center; margin-top: 20px; color: black;">
+    Desenvolvido por <a href="#" target="_blank" style="color: black;">@eusouoviktor</a>
+  </footer>  
+</html>
